@@ -15,6 +15,7 @@ Montar una infraestructura base para:
 
 # 🧱 Arquitectura general
 
+```text
 - Proxmox host: 4–6 GB RAM (reservado)
 -- SO: Proxmox VE (basado en Debian)
 
@@ -53,7 +54,7 @@ Montar una infraestructura base para:
 ---- Gitea (repositorios Git)
 ---- BookStack (documentación)
 ---- Nginx Proxy Manager o Caddy (reverse proxy)
-
+```
 ---
 
 # 💾 Almacenamiento
@@ -195,3 +196,150 @@ Base sólida para evolucionar hacia:
 - CI/CD
 - Observabilidad completa
 - Alta disponibilidad (cuando haya más hardware)
+
+---
+
+# Gestion usuarios PROXMOX
+
+```text
+# 👥 Grupos, roles y usuarios en Proxmox
+
+## 🔴 Grupo: admins
+- Descripción: Administradores completos del sistema
+- Rol: Administrador
+- Ruta: /
+
+- Usuario ejemplo:
+  - admin@pam
+
+- Permisos:
+  - Acceso total a Proxmox
+  - Crear/eliminar VMs
+  - Configurar red, almacenamiento, backups
+  - Gestión de usuarios y permisos
+
+---
+
+## 🟠 Grupo: devops
+- Descripción: Operaciones e infraestructura
+- Rol: PVEAdmin
+- Ruta: /
+
+- Usuario ejemplo:
+  - devops@pam
+
+- Permisos:
+  - Crear y gestionar VMs
+  - Arrancar/parar máquinas
+  - Acceso a consola
+  - No puede modificar usuarios ni sistema base
+
+---
+
+## 🟡 Grupo: developers
+- Descripción: Desarrolladores
+- Rol: PVEVMUser
+- Ruta: /vms
+
+- Usuario ejemplo:
+  - dev1@pam
+
+- Permisos:
+  - Acceder a VMs asignadas
+  - Usar consola
+  - Reiniciar VMs
+  - No puede crear ni borrar VMs
+
+---
+
+## 🟢 Grupo: readonly
+- Descripción: Solo lectura / auditoría
+- Rol: PVEAuditor
+- Ruta: /
+
+- Usuario ejemplo:
+  - auditor@pam
+
+- Permisos:
+  - Ver estado del sistema
+  - Ver métricas
+  - Ver VMs
+  - No puede hacer cambios
+
+---
+
+## 🔵 Grupo: backup (opcional pero recomendado)
+- Descripción: Gestión de copias de seguridad
+- Rol: PVEDatastoreAdmin
+- Ruta: /storage
+
+- Usuario ejemplo:
+  - backup@pam
+
+- Permisos:
+  - Gestionar backups
+  - Acceso a almacenamiento
+  - Restaurar backups
+  - No acceso completo a VMs
+
+---
+
+# 🧠 Reglas importantes
+
+- No asignar permisos directamente a usuarios → usar grupos
+- Todos los usuarios deben pertenecer a un grupo
+- Activar 2FA en admins y devops
+- No usar root para operaciones diarias
+
+---
+
+# 🎯 Configuración mínima recomendada (tu caso)
+
+Si estás solo:
+
+- admin@pam → grupo admins
+
+Si sois 2–3 personas:
+
+- admin@pam → admins
+- devops@pam → devops
+- dev1@pam → developers
+
+---
+
+# 🚀 Escalabilidad futura
+
+Esta estructura permite:
+
+- añadir más usuarios fácilmente
+- separar entornos (dev/prod)
+- integrar con LDAP/AD
+```
+
+---
+
+# Gestion carpetas en bookstak
+
+```text
+📚 Infraestructura
+ ├── Proxmox
+ ├── Red
+ ├── Storage
+ └── Backups
+
+📚 Kubernetes
+ ├── Cluster
+ ├── Deployments
+ └── Ingress
+
+📚 Servicios
+ ├── Vaultwarden
+ ├── Gitea
+ ├── DB
+ └── Apps
+
+📚 Operación
+ ├── Cómo desplegar
+ ├── Cómo restaurar backups
+ └── Troubleshooting
+```
