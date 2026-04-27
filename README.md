@@ -199,121 +199,112 @@ Base sólida para evolucionar hacia:
 
 ---
 
-# Gestion usuarios PROXMOX
+# 👥 Gestión de usuarios, grupos y permisos en Proxmox
 
 ```text
-# 👥 Grupos, roles y usuarios en Proxmox
-
 ## 🔴 Grupo: admins
-- Descripción: Administradores completos del sistema
+- Descripción: Administración total del sistema
 - Rol: Administrador
 - Ruta: /
 
-- Usuario ejemplo:
+- Usuario actual:
   - admin@pam
 
-- Permisos:
-  - Acceso total a Proxmox
-  - Crear/eliminar VMs
-  - Configurar red, almacenamiento, backups
-  - Gestión de usuarios y permisos
+- Uso:
+  - Gestión completa de Proxmox
+  - Configuración de red, storage, backups
+  - Gestión de usuarios
 
 ---
 
 ## 🟠 Grupo: devops
-- Descripción: Operaciones e infraestructura
+- Descripción: Gestión de infraestructura y despliegues
 - Rol: PVEAdmin
 - Ruta: /
 
-- Usuario ejemplo:
+- Usuario futuro:
   - devops@pam
 
-- Permisos:
+- Uso:
   - Crear y gestionar VMs
-  - Arrancar/parar máquinas
+  - Arrancar/parar sistemas
   - Acceso a consola
-  - No puede modificar usuarios ni sistema base
+  - No acceso a usuarios ni sistema base
 
 ---
 
 ## 🟡 Grupo: developers
-- Descripción: Desarrolladores
+- Descripción: Acceso a máquinas y servicios
 - Rol: PVEVMUser
 - Ruta: /vms
 
-- Usuario ejemplo:
+- Usuario futuro:
   - dev1@pam
 
-- Permisos:
-  - Acceder a VMs asignadas
-  - Usar consola
-  - Reiniciar VMs
-  - No puede crear ni borrar VMs
+- Uso:
+  - Acceso a VMs
+  - Consola
+  - Reinicio
+  - Sin creación/eliminación de VMs
 
 ---
 
 ## 🟢 Grupo: readonly
-- Descripción: Solo lectura / auditoría
+- Descripción: Auditoría / solo lectura
 - Rol: PVEAuditor
 - Ruta: /
 
-- Usuario ejemplo:
+- Usuario futuro:
   - auditor@pam
 
-- Permisos:
+- Uso:
   - Ver estado del sistema
   - Ver métricas
-  - Ver VMs
-  - No puede hacer cambios
+  - Sin cambios
 
 ---
 
-## 🔵 Grupo: backup (opcional pero recomendado)
+## 🔵 Grupo: backup
 - Descripción: Gestión de copias de seguridad
 - Rol: PVEDatastoreAdmin
 - Ruta: /storage
 
-- Usuario ejemplo:
+- Usuario futuro:
   - backup@pam
 
-- Permisos:
+- Uso:
   - Gestionar backups
+  - Restaurar máquinas
   - Acceso a almacenamiento
-  - Restaurar backups
-  - No acceso completo a VMs
 
 ---
 
-# 🧠 Reglas importantes
+# 🧠 Configuración actual (solo tú)
 
-- No asignar permisos directamente a usuarios → usar grupos
-- Todos los usuarios deben pertenecer a un grupo
-- Activar 2FA en admins y devops
-- No usar root para operaciones diarias
-
----
-
-# 🎯 Configuración mínima recomendada (tu caso)
-
-Si estás solo:
+Usuarios activos:
 
 - admin@pam → grupo admins
 
-Si sois 2–3 personas:
-
-- admin@pam → admins
-- devops@pam → devops
-- dev1@pam → developers
+👉 No necesitas crear los otros usuarios todavía
+👉 Solo crea los grupos y deja los permisos preparados
 
 ---
 
-# 🚀 Escalabilidad futura
+# 🔐 Buenas prácticas
 
-Esta estructura permite:
+- Usar SIEMPRE grupos para permisos
+- Activar 2FA en admin
+- No usar root para operar
+- No dar permisos globales innecesarios
 
-- añadir más usuarios fácilmente
-- separar entornos (dev/prod)
-- integrar con LDAP/AD
+---
+
+# 🚀 Ventajas de este enfoque
+
+- Escalas sin tocar permisos
+- Añadir usuarios es inmediato
+- Separación clara de responsabilidades
+- Seguridad desde el inicio
 ```
 
 ---
